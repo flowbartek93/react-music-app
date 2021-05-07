@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 
-import Controls from "./Controls";
 import Progress from "./Progress";
-
+import Audio from "./Audio";
 const Player = () => {
   return (
     <div className="player-container">
@@ -10,7 +9,7 @@ const Player = () => {
       <h2 id="title">Electric Chill</h2>
       <h3 id="artist">Jacinsto</h3>
 
-      <Controls />
+      <Audio />
       <Progress />
     </div>
   );

@@ -32,6 +32,7 @@ body {
   position: relative;
   top: -50px;
   left: 50px;
+  cursor: pointer;
 }
 
 .img-container img {
@@ -83,16 +84,17 @@ h3 {
 
 /* Controls */
 .player-controls {
-  position: relative;
-  top: -15px;
-  left: 120px;
-  width: 200px;
+  display: flex;
+  width: 300px;
+  margin: 0 auto;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
 }
 
 .fas {
   font-size: 30px;
   color: rgb(129, 129, 129);
-  margin-right: 30px;
   user-select: none;
   cursor: pointer;
 }

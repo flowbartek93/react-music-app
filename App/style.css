@@ -19,7 +19,7 @@ body {
 }
 
 .player-container {
-  height: 500px;
+  height: 600px;
   width: 400px;
   background: #414c50;
   border-radius: 20px;
@@ -107,6 +107,28 @@ h3 {
   font-size: 40px;
   position: relative;
   top: 3px;
+}
+
+.select-category {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.select-category .categories {
+  padding: 0 1.5rem;
+}
+
+.category.hidden {
+  display: none;
+}
+
+.category.hidden.visible {
+  display: block;
 }
 
 /* Media Query: iPhone (Vertical) */

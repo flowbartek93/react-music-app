@@ -38,7 +38,7 @@ config = {
       },
 
       {
-        test: /\.mp3$/,
+        test: /(\.jpg|\.mp3)$/,
         loader: "file-loader"
       }
     ]

@@ -1,21 +1,42 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
-const Controls = ({ player, list, category, width }) => {
+const Controls = ({ list, category }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState(0);
+  const [width, setWidth] = useState("");
 
   const title = useRef(null);
   const artist = useRef(null);
   const image = useRef(null);
   const progressBar = useRef(null);
 
+  const musicPlayer = useRef(null);
+
   const playMusic = () => {
     if (isPlaying) {
-      player.current.pause();
+      musicPlayer.current.pause();
       setIsPlaying(false);
     } else {
       setIsPlaying(true);
-      player.current.play();
+      musicPlayer.current.play();
+    }
+  };
+
+  const loadMetaData = item => {
+    const el = document.querySelector("#duration");
+
+    const durationMinutes = Math.floor(item.duration / 60);
+
+    let durationSeconds = Math.floor(item.duration % 60);
+
+    if (durationSeconds < 10) {
+      durationSeconds = `0${durationSeconds}`;
+    }
+
+    //delay
+
+    if (durationSeconds) {
+      el.textContent = `${durationMinutes}:${durationSeconds}`;
     }
   };
 
@@ -25,14 +46,17 @@ const Controls = ({ player, list, category, width }) => {
     } else if (currentSong < 0) {
       setCurrentSong(list[category].length - 1);
     } else {
-      player.current.src = list[category][currentSong].source;
+      //Obsługa pojedynyczych kawałków
+
+      musicPlayer.current.src = list[category][currentSong].source;
       title.current.textContent = list[category][currentSong].name;
+
       artist.current.textContent = list[category][currentSong].artist;
       image.current.src = list[category][currentSong].img;
     }
 
     if (isPlaying) {
-      player.current.play();
+      musicPlayer.current.play();
     }
   }, [currentSong, category]);
 
@@ -45,6 +69,24 @@ const Controls = ({ player, list, category, width }) => {
   useEffect(() => {
     progressBar.current.style.width = "0%";
   }, [currentSong]);
+
+  const handleProgress = e => {
+    const currentTimeEl = document.querySelector("#current-time");
+    const { duration, currentTime } = e.nativeEvent.srcElement;
+
+    const progressPercent = (currentTime / duration) * 100;
+    setWidth(`${progressPercent}%`);
+
+    //calculate display for current time
+    const currentMinutes = Math.floor(currentTime / 60);
+
+    let currentSeconds = Math.floor(currentTime % 60);
+
+    if (currentSeconds < 10) {
+      currentSeconds = `0${currentSeconds}`;
+    }
+    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+  };
 
   return (
     <>
@@ -64,10 +106,12 @@ const Controls = ({ player, list, category, width }) => {
       <div className="progress-container" id="progress-container">
         <div ref={progressBar} className="progress" id="progress"></div>
         <div className="duration-wrapper">
-          <span id="current-time">00:00</span>
-          <span id="duration">2:06</span>
+          <span id="current-time">0:00</span>
+          <span id="duration"></span>
         </div>
       </div>
+
+      <audio preload="metadata" onLoadedMetadata={e => loadMetaData(e.target)} onTimeUpdate={handleProgress} className="music" ref={musicPlayer}></audio>
     </>
   );
 };

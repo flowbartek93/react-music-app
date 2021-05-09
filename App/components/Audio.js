@@ -92,8 +92,6 @@ const Audio = () => {
     ]
   ];
 
-  const musicPlayer = useRef(null);
-
   const [category, setCategory] = useState(0);
   const categories = useRef(null);
 
@@ -136,21 +134,11 @@ const Audio = () => {
 
   //Progress Bar state
 
-  const [width, setWidth] = useState("");
-
-  const handleProgress = e => {
-    const { duration, currentTime } = e.nativeEvent.srcElement;
-
-    const progressPercent = (currentTime / duration) * 100;
-    setWidth(`${progressPercent}%`);
-  };
-
   return (
     <>
-      <Controls player={musicPlayer} list={songList} category={category} width={width} />
+      <Controls list={songList} category={category} />
 
-      <audio onTimeUpdate={handleProgress} className="music" ref={musicPlayer}></audio>
-
+      <h3>Genre</h3>
       <div className="select-category">
         <i onClick={prevCategory} className="fas fa-angle-left"></i>
         <div ref={categories} className="categories">

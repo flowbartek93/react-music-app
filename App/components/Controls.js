@@ -63,6 +63,8 @@ const Controls = ({ list, category }) => {
   useEffect(() => {
     if (isPlaying) {
       progressBar.current.style.width = width;
+    } else {
+      progressBar.current.style.width = width;
     }
   }, [width]);
 
@@ -88,6 +90,21 @@ const Controls = ({ list, category }) => {
     currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
   };
 
+  const selectTime = e => {
+    let width = e.target.clientWidth;
+    let clickedPlace = e.nativeEvent.offsetX;
+
+    const { duration } = musicPlayer.current;
+
+    if (!isPlaying) {
+      setWidth((clickedPlace / width) * duration);
+    }
+    musicPlayer.current.currentTime = (clickedPlace / width) * duration;
+
+    console.log(width, clickedPlace);
+    console.log(e);
+  };
+
   return (
     <>
       <div className="img-container">
@@ -103,7 +120,7 @@ const Controls = ({ list, category }) => {
         <i className="fas fa-forward" id="next" onClick={() => setCurrentSong(prev => prev + 1)} title="Previous"></i>
       </div>
 
-      <div className="progress-container" id="progress-container">
+      <div onClick={selectTime} className="progress-container" id="progress-container">
         <div ref={progressBar} className="progress" id="progress"></div>
         <div className="duration-wrapper">
           <span id="current-time">0:00</span>
